@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/02 10:39:46 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/03 10:08:11 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,10 @@ LIBS = $(LFT) -L
 
 HPATH = -I./
 
-SRC =
+SRC = tiny.c \
+	  small.c \
 
-SRCDIR = $(addprefix ./src/, $(SRC))
+SRCDIR = $(addprefix ./sources/, $(SRC))
 
 CC = gcc -g -Wall -Wextra -Werror
 

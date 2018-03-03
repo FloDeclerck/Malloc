@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/02 17:47:19 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/03 10:06:09 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define __FT_MALLOC_H__
 # define align4(x) (((((x) - 1) >> 2) << 2) + 4)
 # define BLOCK_SIZE (sizeof(t_block))
-# define TINY (4096)
+# define TINY (8 * 4096)
+# define SMALL (32 * 4096)
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -43,7 +44,8 @@ typedef struct		s_data
 	t_block			*large;
 }					t_data;
 
-
-t_block		ft_find_block(t_block *last, size_t size);
+t_block		ft_find_tiny(t_block *last, size_t s);
+size_t		ft_prealloc_tiny(size_t size);
+size_t		ft_prealloc_small(size_t size);
 
 #endif
