@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/03 10:08:11 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/03 11:45:01 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@ NAME = libft_malloc_$(HOSTTYPE).so
 
 LFT = libft/libft.a
 
-LIBS = $(LFT) -L
+LIBS = -L ./libft/
 
-HPATH = -I./
+HPATH = -I ./includes -I ./libft/
 
-SRC = tiny.c \
-	  small.c \
+SRC = main.c\
+	  prealloc.c\
 
 SRCDIR = $(addprefix ./sources/, $(SRC))
 
@@ -33,20 +33,20 @@ OBJ = obj
 
 RM = rm -rf
 
-OBJDIR = $(addprefix ./(OBJ)/, $(SRC:.c=.o))
+OBJDIR = $(addprefix ./$(OBJ)/, $(SRC:.c=.o))
 
 $(NAME):
 	make -C libft
 	$(CC) -c $(SRCDIR)
 	mkdir -p $(OBJ) && mv $(SRC:.c=.o) ./$(OBJ)/
-	$(CC) - o $(NAME) $(OBJDIR) $(LIBS) $(HPATH)
+	$(CC) -o $(NAME) $(OBJDIR) $(LIBS) $(HPATH)
 	ln -s $(NAME) libft_malloc.so
 
 all: $(NAME)
 
 clean:
 	$(RM) $(OBJ)
-	$(RM)libft_malloc.so
+	$(RM) libft_malloc.so
 	make clean -C libft
 
 fclean: clean
