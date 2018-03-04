@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 15:50:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/03 17:41:32 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/04 10:17:03 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,14 @@ void		*ft_tiny(size_t size)
 int main ()
 {
 	int i;
-	char *addr;
+	int  *p;
 
-	(void)addr;
 	i = 0;
-	while (i < 100000)
+	while (i < 1024)
 	{
-		addr = (char*)ft_tiny(100000);
-		addr[0] = 42;
-		printf("%d", *addr);
+		p = ft_tiny(100000);
+		printf("%p\n", p);
 		i++;
-		free(addr);
 	}
 	return (0);
 }
