@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/04 17:32:34 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/05 11:30:53 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define FT_MALLOC_H
 
 # define ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
-# define BLOCK_SIZE sizeof(struct s_block)
-# define AREA_SIZE sizeof(struct s_area)
+# define TINY_SIZE sizeof(struct s_tiny)
+# define SMALL_SIZE sizeof(struct s_small)
 
 # define TINY (8 * getpagesize())
 # define TINY_MAX 992
@@ -32,31 +32,32 @@
 
 void *base;
 
-typedef struct			s_block
+typedef struct			s_tiny
 {
 	size_t				size;
-	struct s_block		*next;
-	struct s_block		*prev;
-	int					free;
-	void				*area;
+	struct s_tiny		*next;
+	struct s_tiny		*prev;
 	void				*ptr;
-	char				data[1];
-}						t_block;
-
-typedef struct			s_area
-{
-	size_t				size;
-	struct s_area		*next;
-	struct s_area		*prev;
-	struct s_block		*block;
+	void				*tiny;
 	int					free;
 	char				data[0];
-}						t_area;
+}						t_tiny;
 
-t_block		ft_extend_tiny(t_block last, size_t s);
-void		ft_tiny_split(t_block b, size_t s);
-void		*ft_test(size_t size);
-t_area		*ft_init_area(t_area *last, size_t size);
-t_block		*ft_find_block(t_area *a, size_t size);
+typedef struct			s_small
+{
+	size_t				size;
+	struct s_small		*next;
+	struct s_small		*prev;
+	void				*ptr;
+	void				*small;
+	int					free;
+	char				data[0];
+}						t_small;
+
+t_tiny		*ft_extend_tiny(t_tiny *last, size_t s);
+void		*ft_tiny(size_t size);
+void		*ft_small(size_t size);
+t_tiny		*ft_init_area(t_tiny *last, size_t size);
+t_tiny		*ft_find_block(t_tiny *last, size_t size);
 
 #endif
