@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/05 11:32:45 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/07 16:39:53 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,16 @@ NAME = libft_malloc_$(HOSTTYPE).so
 
 LFT = libft/libft.a
 
-LIBS = -L ./libft/
+LIBS = -L libft/ -lft
 
 HPATH = -I ./includes -I ./libft/
 
-SRC = main.c\
-	  tiny.c\
-	  small.c
+SRC = test.c\
+	  show_alloc_mem.c\
 
 SRCDIR = $(addprefix ./sources/, $(SRC))
 
-CC = gcc -g -Wall -Wextra -Werror
+CC = gcc -g -Wall -Wextra -Werror -fPIC
 
 OBJ = obj
 
@@ -37,7 +36,7 @@ RM = rm -rf
 OBJDIR = $(addprefix ./$(OBJ)/, $(SRC:.c=.o))
 
 $(NAME):
-	make -C libft
+	make -C libft/
 	$(CC) -c $(SRCDIR)
 	mkdir -p $(OBJ) && mv $(SRC:.c=.o) ./$(OBJ)/
 	$(CC) -o $(NAME) $(OBJDIR) $(LIBS) $(HPATH)

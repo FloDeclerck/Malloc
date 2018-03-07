@@ -6,12 +6,82 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 10:32:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/05 11:33:11 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:24:09 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
+void		ft_split_small(t_area *a, size_t size)
+{
+	t_block *new;
+
+	new = (void *)a->block->data + size;
+	new->size = SMALL - size - BLOCK_SIZE;
+	new->next = NULL;
+	new->prev = a->block;
+	new->free = 1;
+	new->ptr = a->block->data + size;
+	new->area = a;
+	a->block->next = new;
+}
+
+t_area		*ft_init_small(t_area *last, size_t size)
+{
+	t_area *a;
+
+	a = (t_area *)mmap(NULL, SMALL, PROT_READ | PROT_WRITE,
+					MAP_ANON | MAP_PRIVATE, -1, 0);
+	if (a == MAP_FAILED)
+		return (NULL);
+	a->type = IS_SMALL;
+	a->size = SMALL;
+	a->next = NULL;
+	a->prev = last;
+	a->block = ft_new_block(a, size);
+	//ft_split_small(a, size);
+	if (last)
+		last->next = a;
+	return (a);
+}
+
+
+void		*ft_small(size_t size)
+{
+	t_area *a;
+	t_block *b;
+
+	size = ALIGN4(size);
+	if (base)
+	{
+		a = base;
+		b = ft_find_block(size);
+		if (b)
+		{
+			if ((b->size - size) >= (BLOCK_SIZE + 4))
+				ft_split_small(a, size);
+			b->free = 0;
+		}
+		else
+		{
+			while (a->next)
+				a = a->next;
+			a = ft_init_small(a, size);
+			if (!a)
+				return (NULL);
+			b = a->next->block;
+		}
+		return (b->data);
+	}
+	a = ft_init_small(NULL, size);
+	if (!a)
+		return (NULL);
+	base = a;
+	b = a->block;
+	return (b->data);
+}
+
+/*
 t_small		*ft_find_small(t_small *last, size_t size)
 {
 	t_small *s;
@@ -42,7 +112,7 @@ t_small		*ft_extend_small(t_small *last, size_t size)
 {
 	t_small *s;
 
-	s = (t_small *)mmap(NULL, SMALL, PROT_READ | PROT_WRITE,
+	s = mmap(NULL, SMALL, PROT_READ | PROT_WRITE,
 			MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (s == MAP_FAILED)
 		return (NULL);
@@ -89,7 +159,6 @@ void		*ft_small(size_t size)
 	return (s->data);
 }
 
-/*
 int main()
 {
 	int i = 0;

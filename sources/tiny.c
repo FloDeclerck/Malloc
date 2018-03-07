@@ -6,13 +6,82 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/05 11:33:22 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:24:18 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-t_tiny		*ft_find_block(t_tiny *last, size_t size)
+void		ft_split_tiny(t_area *a, size_t size)
+{
+	t_block *new;
+
+	new = (void *)a->block->data + size;
+	new->size = TINY - size - BLOCK_SIZE;
+	new->next = NULL;
+	new->prev = a->block;
+	new->free = 1;
+	new->ptr = a->block->data + size;
+	new->area = a;
+	a->block->next = new;
+}
+
+t_area		*ft_init_tiny(t_area *last, size_t size)
+{
+	t_area *a;
+
+	a = (t_area *)mmap(0, TINY, PROT_READ | PROT_WRITE,
+					MAP_ANON | MAP_PRIVATE, -1, 0);
+	if (a == MAP_FAILED)
+		return (NULL);
+	a->type = IS_TINY;
+	a->size = TINY;
+	a->next = NULL;
+	a->prev = last;
+	a->block = ft_new_block(a, size);
+	//ft_split_tiny(a, size);
+	if (last)
+		last->next = a;
+	return (a);
+}
+
+
+void		*ft_tiny(size_t size)
+{
+	t_area *a;
+	t_block *b;
+
+	size = ALIGN4(size);
+	if (base)
+	{
+		a = base;
+		b = ft_find_block(size);
+		if (b)
+		{
+			if ((b->size - size) >= (BLOCK_SIZE + 4))
+				ft_split_tiny(a, size);
+			b->free = 0;
+		}
+		else
+		{
+			while (a->next)
+				a = a->next;
+			a = ft_init_tiny(a, size);
+			if (!a)
+				return (NULL);
+			b = a->next->block;
+		}
+		return (b->data);
+	}
+	a = ft_init_tiny(NULL, size);
+	if (!a)
+		return (NULL);
+	base = a;
+	b = a->block;
+	return (b->data);
+}
+
+/*t_tiny		*ft_find_block(t_tiny *last, size_t size)
 {
 	t_tiny *t;
 
@@ -57,8 +126,6 @@ t_tiny		*ft_extend_tiny(t_tiny *last, size_t size)
 	return (t);
 
 }
-
-/*
 void		ft_split_block(t_block *b, size_t size)
 {
 	t_block *new;
@@ -71,9 +138,7 @@ void		ft_split_block(t_block *b, size_t size)
 	new->ptr = b->data + size;
 	new->area = b->area;
 	b->next = new;
-}*/
-
-
+}
 void		*ft_tiny(size_t size)
 {
 	t_tiny *t, *last = NULL;
@@ -105,7 +170,7 @@ void		*ft_tiny(size_t size)
 	}
 	return (t->data);
 }
-/*
+
 int main()
 {
 	int i = 0;

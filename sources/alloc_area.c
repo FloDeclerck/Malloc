@@ -6,13 +6,13 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/04 15:18:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/05 10:31:12 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:39:27 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-t_block		*ft_init_block(t_area *a, size_t size)
+t_block		*ft_new_block(t_area *a, size_t size)
 {
 	t_block *b;
 	
@@ -26,68 +26,59 @@ t_block		*ft_init_block(t_area *a, size_t size)
 	return (b);
 }
 
-void		ft_split_area(t_area *a, size_t size)
+t_block		*ft_find_block_test(t_area *a, size_t size)
+{
+	t_block *b;
+
+	b = a->block;
+	while (b && !(b->free && b->size >= size))
+		b = b->next;
+	return (b);
+}
+
+t_block		*ft_find_block(size_t size)
+{
+	t_area *a;
+	t_block *b;
+
+	a = base;
+	b = NULL;
+	while (a)
+	{
+		b = ft_find_block_test(a, size);
+		if (b)
+			return (b);
+		a = a->next;
+	}
+	return (b);
+}
+
+void		ft_split_block(t_block *b, size_t size)
 {
 	t_block *new;
 
-	new = (void *)a->block->data + size;
-	new->size = (TINY - BLOCK_SIZE - AREA_SIZE) - size - BLOCK_SIZE;
-	new->next = NULL;
-	new->prev = a->block;
+	new = (void *)b->data + size;
+	new->size = b->size - size - BLOCK_SIZE;
+	new->next = b->next;
+	new->prev = b;
 	new->free = 1;
-	new->ptr = a->block->data + size;
-	new->area = a;
-	a->block->next = new;
+	new->ptr = b->data + size;
+	new->area = b->area;
+	b->size = size;
+	b->next = new;
 }
-
-t_area		*ft_init_area(t_area *last, size_t size)
+/*
+int main()
 {
-	t_area *a;
+	int i = 0;
+	char *addr;
 
-	a = (t_area *)mmap(NULL, TINY, PROT_READ | PROT_WRITE,
-					MAP_ANON | MAP_PRIVATE, -1, 0);
-	if (a == MAP_FAILED)
-		return (NULL);
-	a->size = size;
-	a->next = NULL;
-	a->prev = last;
-	a->block = ft_init_block(a, size);
-	ft_split_area(a, size);
-	if (last)
-		last->next = a;
-	a->free = 0;
-	return (a);
-}
-
-void		*ft_test(size_t size)
-{
-	t_area *a = NULL;
-	t_area *last;
-
-	size = ALIGN4(size);
-	if (base)
+	while (i < 1)
 	{
-		last = base;
-		ft_find_block(last, size);
-		if (a)
-		{
-			if ((a->size - size) >= (BLOCK_SIZE + 4))
-				ft_split_area(a, size);
-			a->free = 0;
-		}
-		else
-		{
-			a = ft_init_area(last, size);
-			if (!a)
-				return (NULL);
-		}
+		addr = (char *)ft_malloc(35000);
+		addr[0] = 42;
+		printf("%d", *addr);
+		i++;
 	}
-	else
-	{
-		a = ft_init_area(NULL, size);
-		if (!a)
-			return (NULL);
-		base = a;
-	}
-	return (a->data);
-}
+	return (0);
+}*/

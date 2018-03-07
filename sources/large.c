@@ -1,20 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prealloc.c                                         :+:      :+:    :+:   */
+/*   large.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/02 15:50:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:22:25 by fdeclerc         ###   ########.fr       */
+/*   Created: 2018/03/07 09:10:41 by fdeclerc          #+#    #+#             */
+/*   Updated: 2018/03/07 16:23:58 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-void *base = NULL;
+void		ft_split_large(t_area *a, size_t size)
+{
+	t_block *new;
+	new = (void *)a->block->data + size;
+	new->size = (size + BLOCK_SIZE + AREA_SIZE) - size - BLOCK_SIZE;
+	new->next = NULL;
+	new->prev = a->block;
+	new->free = 1;
+	new->ptr = a->block->data + size;
+	new->area = a;
+	a->block->next = new;
+}
 
-void		*ft_malloc(size_t size)
+t_area		*ft_init_large(t_area *last, size_t size)
+{
+	t_area *a;
+
+	a = (t_area *)mmap(0, size + BLOCK_SIZE + AREA_SIZE, PROT_READ |
+			PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	if (a == MAP_FAILED)
+		return (NULL);
+	a->type = IS_LARGE;
+	a->size = size + BLOCK_SIZE + AREA_SIZE;
+	a->next = NULL;
+	a->prev = last;
+	a->block = ft_new_block(a, size);
+	if (last)
+		last->next = a;
+	return (a);
+}
+
+void		*ft_large(size_t size)
 {
 	t_area *a;
 	t_block *b;
@@ -34,43 +63,17 @@ void		*ft_malloc(size_t size)
 		{
 			while (a->next)
 				a = a->next;
-			if (size <= TINY_MAX)
-				a = ft_init_tiny(a, size);
-			else if (size <= SMALL_MAX)
-				a = ft_init_small(a, size);
-			else
-				a = ft_init_large(a, size);
+			a = ft_init_large(a, size);
 			if (!a)
 				return (NULL);
 			b = a->next->block;
 		}
 		return (b->data);
 	}
-	if (size <= TINY_MAX)
-		a = ft_init_tiny(NULL, size);
-	else if (size <= SMALL_MAX)
-		a = ft_init_small(NULL, size);
-	else
-		a = ft_init_large(NULL, size);
+	a = ft_init_large(NULL, size);
 	if (!a)
 		return (NULL);
 	base = a;
 	b = a->block;
 	return (b->data);
 }
-/*
-int main ()
-{
-	int i;
-	char  *p;
-
-	i = 0;
-	while (i < 1)
-	{
-		p = (char *)ft_malloc(127000);
-		p[0] = 42;
-		printf("%d\n", *p);
-		i++;
-	}
-	return (0);
-}*/

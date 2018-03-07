@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/05 11:30:53 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/07 16:21:26 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 # define FT_MALLOC_H
 
 # define ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
-# define TINY_SIZE sizeof(struct s_tiny)
-# define SMALL_SIZE sizeof(struct s_small)
+# define BLOCK_SIZE sizeof(struct s_block)
+# define AREA_SIZE sizeof(struct s_area)
 
-# define TINY (8 * getpagesize())
+# define TINY (8 * 4096)
+# define IS_TINY 0
 # define TINY_MAX 992
-# define SMALL (32 * getpagesize())
-#define SMALL_MAX 127000
+# define SMALL (32 * 4096)
+# define IS_SMALL 1
+# define SMALL_MAX 127000
+# define IS_LARGE 2
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -29,35 +32,37 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "../libft/libft.h"
 
-void *base;
+extern void *base;
 
-typedef struct			s_tiny
+typedef struct			s_area
 {
 	size_t				size;
-	struct s_tiny		*next;
-	struct s_tiny		*prev;
-	void				*ptr;
-	void				*tiny;
-	int					free;
-	char				data[0];
-}						t_tiny;
+	int					type;
+	struct s_area		*next;
+	struct s_area		*prev;
+	struct s_block		*block;
+}						t_area;
 
-typedef struct			s_small
+typedef struct			s_block
 {
 	size_t				size;
-	struct s_small		*next;
-	struct s_small		*prev;
+	struct s_block		*next;
+	struct s_block		*prev;
 	void				*ptr;
-	void				*small;
+	void				*area;
 	int					free;
-	char				data[0];
-}						t_small;
+	char				data[1];
+}						t_block;
 
-t_tiny		*ft_extend_tiny(t_tiny *last, size_t s);
-void		*ft_tiny(size_t size);
-void		*ft_small(size_t size);
-t_tiny		*ft_init_area(t_tiny *last, size_t size);
-t_tiny		*ft_find_block(t_tiny *last, size_t size);
+t_area		*ft_init_tiny(t_area *last, size_t size);
+t_area		*ft_init_small(t_area *last, size_t size);
+int			ft_total_size(void);
+t_area		*ft_init_large(t_area *last, size_t size);
+void		*ft_malloc(size_t size);
+t_block		*ft_new_block(t_area *a, size_t size);
+t_block		*ft_find_block(size_t size);
+void		ft_split_block(t_block *b, size_t size);
 
 #endif
