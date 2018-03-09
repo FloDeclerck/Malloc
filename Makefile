@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/07 16:39:53 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/09 17:16:11 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,11 @@ LIBS = -L libft/ -lft
 
 HPATH = -I ./includes -I ./libft/
 
-SRC = test.c\
+SRC = tiny.c\
+	  small.c\
+	  large.c\
+	  main.c\
+	  alloc_area.c\
 	  show_alloc_mem.c\
 
 SRCDIR = $(addprefix ./sources/, $(SRC))

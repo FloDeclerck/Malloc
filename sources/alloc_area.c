@@ -6,12 +6,20 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/04 15:18:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:39:27 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:15:56 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
+int		ft_get_page_type(size_t size)
+{
+	if (size <= TINY_MAX)
+		return (IS_TINY);
+	if (size <= SMALL_MAX)
+		return (IS_SMALL);
+	return (IS_LARGE);
+}
 t_block		*ft_new_block(t_area *a, size_t size)
 {
 	t_block *b;
@@ -45,7 +53,8 @@ t_block		*ft_find_block(size_t size)
 	b = NULL;
 	while (a)
 	{
-		b = ft_find_block_test(a, size);
+		if (ft_get_page_type(size) == a->type)
+			b = ft_find_block_test(a, size);
 		if (b)
 			return (b);
 		a = a->next;

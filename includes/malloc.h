@@ -6,14 +6,13 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:21:26 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:10:46 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# define ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
 # define BLOCK_SIZE sizeof(struct s_block)
 # define AREA_SIZE sizeof(struct s_area)
 
@@ -34,11 +33,9 @@
 #include <stdlib.h>
 #include "../libft/libft.h"
 
-extern void *base;
-
 typedef struct			s_area
 {
-	size_t				size;
+	int					size;
 	int					type;
 	struct s_area		*next;
 	struct s_area		*prev;
@@ -50,17 +47,22 @@ typedef struct			s_block
 	size_t				size;
 	struct s_block		*next;
 	struct s_block		*prev;
-	void				*ptr;
-	void				*area;
 	int					free;
+	void				*area;
+	void				*ptr;
 	char				data[1];
 }						t_block;
 
+extern void *base;
+
 t_area		*ft_init_tiny(t_area *last, size_t size);
 t_area		*ft_init_small(t_area *last, size_t size);
-int			ft_total_size(void);
+//long			ft_total_size(t_area *a);
 t_area		*ft_init_large(t_area *last, size_t size);
 void		*ft_malloc(size_t size);
+void		*ft_tiny(size_t size);
+void		*ft_small(size_t size);
+void		*ft_large(size_t size);
 t_block		*ft_new_block(t_area *a, size_t size);
 t_block		*ft_find_block(size_t size);
 void		ft_split_block(t_block *b, size_t size);

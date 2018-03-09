@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 10:32:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:24:09 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 16:15:52 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ t_area		*ft_init_small(t_area *last, size_t size)
 					MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (a == MAP_FAILED)
 		return (NULL);
-	a->type = IS_SMALL;
+	a->type = 1;
 	a->size = SMALL;
 	a->next = NULL;
 	a->prev = last;
 	a->block = ft_new_block(a, size);
-	//ft_split_small(a, size);
+	ft_split_small(a, size);
 	if (last)
 		last->next = a;
 	return (a);
@@ -51,7 +51,6 @@ void		*ft_small(size_t size)
 	t_area *a;
 	t_block *b;
 
-	size = ALIGN4(size);
 	if (base)
 	{
 		a = base;
@@ -59,7 +58,7 @@ void		*ft_small(size_t size)
 		if (b)
 		{
 			if ((b->size - size) >= (BLOCK_SIZE + 4))
-				ft_split_small(a, size);
+				ft_split_block(b, size);
 			b->free = 0;
 		}
 		else

@@ -6,20 +6,31 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 15:50:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:22:25 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 18:01:58 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-void *base = NULL;
+void		*ft_malloc(size_t size)
+{
+	void *ret;
 
+	ret = NULL;
+	if (size <= TINY_MAX)
+		ret = ft_tiny(size);
+	if (size <= SMALL_MAX)
+		ret = ft_small(size);
+	ret = ft_large(size);
+	return (ret);
+
+}
+/*
 void		*ft_malloc(size_t size)
 {
 	t_area *a;
 	t_block *b;
 
-	size = ALIGN4(size);
 	if (base)
 	{
 		a = base;
@@ -50,27 +61,11 @@ void		*ft_malloc(size_t size)
 		a = ft_init_tiny(NULL, size);
 	else if (size <= SMALL_MAX)
 		a = ft_init_small(NULL, size);
-	else
+	else 
 		a = ft_init_large(NULL, size);
 	if (!a)
 		return (NULL);
 	base = a;
 	b = a->block;
-	return (b->data);
-}
-/*
-int main ()
-{
-	int i;
-	char  *p;
-
-	i = 0;
-	while (i < 1)
-	{
-		p = (char *)ft_malloc(127000);
-		p[0] = 42;
-		printf("%d\n", *p);
-		i++;
-	}
-	return (0);
+	return(b->data);
 }*/

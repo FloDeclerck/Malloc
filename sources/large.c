@@ -6,11 +6,12 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 09:10:41 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:23:58 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:35:08 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
+
 
 void		ft_split_large(t_area *a, size_t size)
 {
@@ -33,7 +34,7 @@ t_area		*ft_init_large(t_area *last, size_t size)
 			PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (a == MAP_FAILED)
 		return (NULL);
-	a->type = IS_LARGE;
+	a->type = 2;
 	a->size = size + BLOCK_SIZE + AREA_SIZE;
 	a->next = NULL;
 	a->prev = last;
@@ -48,7 +49,6 @@ void		*ft_large(size_t size)
 	t_area *a;
 	t_block *b;
 
-	size = ALIGN4(size);
 	if (base)
 	{
 		a = base;

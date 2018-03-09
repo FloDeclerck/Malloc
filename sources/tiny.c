@@ -6,18 +6,20 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/07 16:24:18 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 17:31:23 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-void		ft_split_tiny(t_area *a, size_t size)
+void *base = NULL;
+
+void		ft_split_tiny(t_area *a, size_t size, size_t alloc)
 {
 	t_block *new;
 
 	new = (void *)a->block->data + size;
-	new->size = TINY - size - BLOCK_SIZE;
+	new->size = alloc - size - BLOCK_SIZE;
 	new->next = NULL;
 	new->prev = a->block;
 	new->free = 1;
@@ -30,16 +32,17 @@ t_area		*ft_init_tiny(t_area *last, size_t size)
 {
 	t_area *a;
 
-	a = (t_area *)mmap(0, TINY, PROT_READ | PROT_WRITE,
+	a = (t_area *)mmap(NULL, TINY, PROT_READ | PROT_WRITE,
 					MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (a == MAP_FAILED)
 		return (NULL);
-	a->type = IS_TINY;
+	a->type = 0;
 	a->size = TINY;
 	a->next = NULL;
 	a->prev = last;
 	a->block = ft_new_block(a, size);
-	//ft_split_tiny(a, size);
+	if (a->type < 2)
+		ft_split_tiny(a, size, TINY - BLOCK_SIZE - AREA_SIZE);
 	if (last)
 		last->next = a;
 	return (a);
@@ -51,7 +54,6 @@ void		*ft_tiny(size_t size)
 	t_area *a;
 	t_block *b;
 
-	size = ALIGN4(size);
 	if (base)
 	{
 		a = base;
@@ -59,7 +61,7 @@ void		*ft_tiny(size_t size)
 		if (b)
 		{
 			if ((b->size - size) >= (BLOCK_SIZE + 4))
-				ft_split_tiny(a, size);
+				ft_split_block(b, size);
 			b->free = 0;
 		}
 		else

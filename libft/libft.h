@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 13:54:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2016/11/16 11:48:32 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/09 14:22:35 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
-size_t			ft_strlen(const char *s);
+size_t			ft_strlen(const char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
