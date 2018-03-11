@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/09 17:16:11 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/11 16:48:56 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ HPATH = -I ./includes -I ./libft/
 SRC = tiny.c\
 	  small.c\
 	  large.c\
-	  main.c\
+	  malloc.c\
 	  alloc_area.c\
 	  show_alloc_mem.c\
 

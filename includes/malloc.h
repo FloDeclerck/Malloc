@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/09 17:10:46 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/11 17:33:14 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct			s_block
 	char				data[1];
 }						t_block;
 
-extern void *base;
+extern void *g_base;
 
 t_area		*ft_init_tiny(t_area *last, size_t size);
 t_area		*ft_init_small(t_area *last, size_t size);
@@ -66,5 +66,8 @@ void		*ft_large(size_t size);
 t_block		*ft_new_block(t_area *a, size_t size);
 t_block		*ft_find_block(size_t size);
 void		ft_split_block(t_block *b, size_t size);
+int			ft_block_type(size_t size);
+t_area		*ft_init_next(t_area *a, size_t size);
+t_area		*ft_init_all(t_area *a, size_t size);
 
 #endif

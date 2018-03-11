@@ -55,15 +55,3 @@ t_env		*ft_prealloc_large(void)
 	env->large->next = NULL;
 	return (env);
 }
-/*
-size_t		ft_prealloc_small(size_t size)
-{
-	if ((SMALL + BLOCK_SIZE) * 100 % getpagesize() == 0)
-		size = ((SMALL + BLOCK_SIZE) * 100);
-	else
-	{
-		size = (((((SMALL + BLOCK_SIZE) * 100) / getpagesize()) + 1) *
-				getpagesize());
-	}
-	return (size);
-}*/
