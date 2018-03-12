@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/04 11:51:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/11 17:40:32 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/12 16:01:35 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ unsigned long		ft_total_size(t_area *a)
 	unsigned long	total;
 
 	total = 0;
-	while (a->block->next)
+	while (a->block->next != NULL)
 	{
 		total += a->block->size;
 		a->block = a->block->next;
@@ -103,12 +103,18 @@ void				show_alloc_mem(void)
 
 int					main(void)
 {
-	ft_malloc(100);
-	ft_malloc(200);
-	ft_malloc(600);
-	ft_malloc(5000);
-	ft_malloc(5500);
-	ft_malloc(200000);
+	int i;
+//	char *addr;
+
+	i = 0;
+	//while (i < 100)
+	//{
+	ft_malloc(130000);
+	ft_malloc(130000);
+	//	i++;
+	//}
+	
+	//ft_free(addr);
 	show_alloc_mem();
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/11 16:48:56 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/12 11:42:02 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC = tiny.c\
 	  large.c\
 	  malloc.c\
 	  alloc_area.c\
+	  free.c\
 	  show_alloc_mem.c\
 
 SRCDIR = $(addprefix ./sources/, $(SRC))

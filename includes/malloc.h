@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/11 17:33:14 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/12 15:42:22 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_area		*ft_init_small(t_area *last, size_t size);
 //long			ft_total_size(t_area *a);
 t_area		*ft_init_large(t_area *last, size_t size);
 void		*ft_malloc(size_t size);
+void		ft_free(void *ptr);
 void		*ft_tiny(size_t size);
 void		*ft_small(size_t size);
 void		*ft_large(size_t size);
