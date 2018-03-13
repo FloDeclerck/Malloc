@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/02 15:50:12 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/11 17:31:34 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/13 16:56:15 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			ft_block_type(size_t size)
 
 void		*ft_malloc_reducer(size_t size)
 {
-	t_block *b;
+	t_block	*b;
 
 	b = ft_find_block(size);
 	if ((b->size - size) >= (BLOCK_SIZE + 4))
@@ -34,7 +34,7 @@ void		*ft_malloc_reducer(size_t size)
 	return (b);
 }
 
-void		*ft_malloc(size_t size)
+void		*malloc(size_t size)
 {
 	t_area	*a;
 	t_block	*b;

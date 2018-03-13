@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/04 11:51:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/12 16:01:35 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/13 16:53:09 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,22 +99,4 @@ void				show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(total);
 	ft_putchar('\n');
-}
-
-int					main(void)
-{
-	int i;
-//	char *addr;
-
-	i = 0;
-	//while (i < 100)
-	//{
-	ft_malloc(130000);
-	ft_malloc(130000);
-	//	i++;
-	//}
-	
-	//ft_free(addr);
-	show_alloc_mem();
-	return (0);
 }

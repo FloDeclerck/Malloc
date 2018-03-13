@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/04 15:18:57 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/12 15:42:58 by fdeclerc         ###   ########.fr       */
+/*   Created: 2018/03/02 15:18:57 by fdeclerc          #+#    #+#             */
+/*   Updated: 2018/03/13 14:13:34 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_area		*ft_init_next(t_area *a, size_t size)
 		a->next = ft_init_tiny(a, size);
 	else if (size <= SMALL_MAX)
 		a->next = ft_init_small(a, size);
-	else 
+	else
 		a->next = ft_init_large(a, size);
 	return (a->next);
 }

@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/09/21 12:19:40 by fdeclerc          #+#    #+#              #
-#    Updated: 2016/11/16 11:49:21 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/13 16:28:50 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,14 +81,18 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME):
+	@echo "\033[32m[COMPILING LIBFT]\033[0m" | tr -d '\n'
 	gcc $(FLAG) $(SRC)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@echo "\033[32m[LIBFT IS READY]\033[0m"
 
 clean:
+	@echo "\033[31m[CLEANING LIBFT]\033[0m" | tr -d '\n'
 	/bin/rm -f $(OBJ)
 
 fclean: clean
+	@echo "\033[31m[FCLEAN LIBFT]\033[0m" | tr -d '\n'
 	/bin/rm -f $(NAME)
 
 re: fclean all

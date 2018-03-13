@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/12 09:43:23 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/12 13:33:10 by fdeclerc         ###   ########.fr       */
+/*   Created: 2018/03/08 09:43:23 by fdeclerc          #+#    #+#             */
+/*   Updated: 2018/03/13 16:58:48 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ t_block		*ft_block_fusion(t_block *b)
 
 t_block		*ft_get_block(void *ptr)
 {
-	t_area *a;
-	t_block *tmp;
+	t_area	*a;
+	t_block	*tmp;
 
 	a = g_base;
 	while (a)
@@ -46,8 +46,8 @@ t_block		*ft_get_block(void *ptr)
 
 int			ft_valid_addr(t_area *a)
 {
-	int i;
-	t_area *tmp;
+	int		i;
+	t_area	*tmp;
 
 	i = 0;
 	tmp = g_base;
@@ -66,7 +66,7 @@ int			ft_valid_addr(t_area *a)
 
 void		ft_end_free(t_area *a)
 {
-	size_t size;
+	size_t	size;
 
 	size = a->size;
 	if (a->next)
@@ -79,11 +79,10 @@ void		ft_end_free(t_area *a)
 		ft_putstr("FREE ERROR\n");
 }
 
-void		ft_free(void *ptr)
+void		free(void *ptr)
 {
-
-	t_area *a;
-	t_block *b;
+	t_area	*a;
+	t_block	*b;
 
 	b = ft_get_block(ptr);
 	if (b)
