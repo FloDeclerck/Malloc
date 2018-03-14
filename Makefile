@@ -6,7 +6,7 @@
 #    By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/27 16:33:37 by fdeclerc          #+#    #+#              #
-#    Updated: 2018/03/13 17:20:09 by fdeclerc         ###   ########.fr        #
+#    Updated: 2018/03/14 09:53:05 by fdeclerc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,49 +16,51 @@ endif
 
 NAME =		libft_malloc_$(HOSTTYPE).so
 
-LFT =		libft/libft.a
+CC = 		gcc -Wall -Wextra -Werror
 
-LIBS =		-L libft/ -lft
+LFLAGS = 	-shared -fPIC
 
-HPATH =		-I ./includes -I ./libft/
+LFT =		libft/
 
-SRC =		small.c\
-			large.c\
-			malloc.c\
-			alloc_area.c\
-			free.c\
-			realloc.c\
-			show_alloc_mem.c\
-			tiny.c\
+LIBS =		-L$(LFT) -lft
 
-SRCDIR =	$(addprefix ./sources/, $(SRC))
-
-CC =		gcc -g -Wall -Wextra -Werror -fPIC
+SRC =		sources/small.c\
+			sources/large.c\
+			sources/malloc.c\
+			sources/alloc_area.c\
+			sources/free.c\
+			sources/realloc.c\
+			sources/show_alloc_mem.c\
+			sources/tiny.c\
 
 RM =		rm -rf
 
-OBJDIR =	$(addprefix ./obj/, $(SRC:.c=.o))
+OBJ =		$(SRC:.c=.o)
+
+OBJDIR = 	obj
 
 all:		$(NAME)
 
-$(NAME):
-			@make -C libft/
-			@echo "\033[32m[build $(NAME)] \033[0m" | tr -d '\n'
-			$(CC) -c $(SRCDIR)
-			@mkdir -p obj && mv $(SRC:.c=.o) ./obj/
-			@$(CC) -o $(NAME) $(OBJDIR) $(LIBS) $(HPATH)
+$(NAME):	$(OBJ)
+			@make -C $(LFT)
+			@echo "\033[32m[BUILDING $(NAME)] \033[0m" | tr -d '\n'
+			@$(CC) $(LFLAGS) -o $(NAME) $(OBJ) $(LIBS)
+			mkdir -p $(OBJDIR) && mv $(OBJ) ./$(OBJDIR)/
 			@rm -f libft_malloc.so
 			@ln -s $(NAME) libft_malloc.so
-			@echo "\033[32m[$(NAME) ready]\033[0m"
+			@echo "\033[32m[$(NAME) IS READY !]\033[0m"
+
+%.o:		%.c
+			@echo "\033[36m[COMPILING...]\033[0m" | tr -d '\n'
+			$(CC) -o $@ -c $<
 
 clean:
-			@echo "\033[31m[Clean Sources] \033[0m" | tr -d '\n'
-			$(RM) $(OBJ)
-			@$(RM) libft_malloc.so
+			@echo "\033[31m[CLEANING SOURCES] \033[0m" | tr -d '\n'
+			$(RM) $(OBJDIR)
 			@make clean -C libft
 
 fclean:		clean
-			@echo "\033[31m[FClean $(NAME)] \033[0m" | tr -d '\n'
+			@echo "\033[31m[FCLEAN $(NAME)] \033[0m" | tr -d '\n'
 			$(RM) $(NAME) libft_malloc.so
 			@make fclean -C libft
 

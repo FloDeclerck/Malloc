@@ -6,7 +6,7 @@
 /*   By: fdeclerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/30 10:10:25 by fdeclerc          #+#    #+#             */
-/*   Updated: 2018/03/13 16:58:28 by fdeclerc         ###   ########.fr       */
+/*   Updated: 2018/03/14 10:38:49 by fdeclerc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # define BLOCK_SIZE sizeof(struct s_block)
 # define AREA_SIZE sizeof(struct s_area)
-# define ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
 
 # define TINY (489 * getpagesize())
 # define IS_TINY 0
@@ -57,6 +56,7 @@ t_area					*ft_init_large(t_area *last, size_t size);
 void					*malloc(size_t size);
 void					free(void *ptr);
 void					*realloc(void *ptr, size_t size);
+void					show_alloc_mem(void);
 
 t_block					*ft_new_block(t_area *a, size_t size);
 t_block					*ft_find_block(size_t size);
